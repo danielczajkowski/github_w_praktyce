@@ -1,4 +1,5 @@
 import Button from './Button';
+import { theme } from 'theme/mainTheme';
 
 const meta = {
   title: 'Components/Button',
@@ -10,9 +11,9 @@ const meta = {
       },
       options: {
         None: null,
-        Primary: 'hsl(49, 100%, 58%)',
-        Secondary: 'hsl(196, 83%, 75%)',
-        Tertiary: 'hsl(106, 47%, 64%)',
+        Primary: theme.color.note,
+        Secondary: theme.color.twitter,
+        Tertiary: theme.color.article,
       },
     },
   },
@@ -24,11 +25,11 @@ const Template = (args) => <Button {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
-  children: 'Primary',
+  children: 'close / save',
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
-  children: 'Secondary',
+  children: 'remove',
   secondary: true,
 };

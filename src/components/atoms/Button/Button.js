@@ -1,26 +1,26 @@
 import styled, { css } from 'styled-components';
 
 const Button = styled.button`
-  background-color: ${({ color }) => color || 'hsl(49, 100%, 58%)'};
+  background-color: ${({ theme, color }) => color || theme.color.note};
   width: ${({ width }) => width || '220px'};
   height: 47px;
-  font-size: 16px;
+  font-size: ${({ theme }) => theme.fontSize.m};
   border-radius: 50px;
   border: none;
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   text-transform: uppercase;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  ${({ secondary }) =>
-    secondary &&
+  ${({ $secondary }) =>
+    $secondary &&
     css`
-      background-color: ${({ color }) => color || 'hsl(0, 0%, 90%)'};
+      background-color: ${({ theme, color }) => color || theme.color.grey200};
       width: ${({ width }) => width || '105px'};
       height: 30px;
-      font-size: 10px;
+      font-size: ${({ theme }) => theme.fontSize.xxs};
     `}
 `;
 
