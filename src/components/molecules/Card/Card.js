@@ -63,8 +63,8 @@ const StyledAvatar = styled.div`
   justify-content: center;
   padding: 0.5rem;
   position: absolute;
-  right: 2.5rem;
-  top: 2.5rem;
+  right: 1.5rem;
+  top: 1rem;
   border-radius: 50%;
   z-index: 1;
 
@@ -84,23 +84,23 @@ const StyledLink = styled(ButtonIcon)`
   height: 5rem;
 `;
 
-const Card = ({ cardType = 'note' }) => (
+const Card = ({ cardType = 'note', title, createdAt, content, articleUrl, avatarUrl }) => (
   <StyledWrapper>
     <InnerWrapper $activeColor={cardType}>
-      <StyledHeading>Card title</StyledHeading>
-      <DateInfo>3 days</DateInfo>
+      <StyledHeading>{title}</StyledHeading>
+      <DateInfo>{createdAt}</DateInfo>
 
-      {cardType === 'article' && <StyledLink icon={linkIcon} active circle href="#" />}
+      {cardType === 'article' && (
+        <StyledLink as="a" target="_blank" icon={linkIcon} active circle href={articleUrl} />
+      )}
       {cardType === 'twitter' && (
         <StyledAvatar>
-          <img src="https://unavatar.io/eduweb.pl" alt="Avatar" />
+          <img src={avatarUrl} alt="Avatar" />
         </StyledAvatar>
       )}
     </InnerWrapper>
     <InnerWrapper $flex>
-      <Paragraph>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.
-      </Paragraph>
+      <Paragraph>{content}</Paragraph>
       <Button $secondary>remove</Button>
     </InnerWrapper>
   </StyledWrapper>
@@ -110,4 +110,9 @@ export default Card;
 
 Card.propTypes = {
   cardType: PropTypes.oneOf(['note', 'twitter', 'article']),
+  title: PropTypes.string,
+  createdAt: PropTypes.string,
+  content: PropTypes.string,
+  avatarUrl: PropTypes.string,
+  articleUrl: PropTypes.string,
 };
