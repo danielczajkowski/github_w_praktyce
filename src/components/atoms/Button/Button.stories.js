@@ -11,7 +11,7 @@ const meta = {
       },
       options: {
         None: null,
-        Primary: theme.color.note,
+        Primary: theme.color.notes,
         Secondary: theme.color.twitter,
         Tertiary: theme.color.article,
       },
@@ -31,5 +31,5 @@ Primary.args = {
 export const Secondary = Template.bind({});
 Secondary.args = {
   children: 'remove',
-  secondary: true,
+  $secondary: true,
 };

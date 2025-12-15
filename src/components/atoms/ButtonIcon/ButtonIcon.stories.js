@@ -12,7 +12,7 @@ const decorators = [
     <div
       style={{
         padding: '1rem',
-        backgroundColor: theme.color.note,
+        backgroundColor: theme.color.notes,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -32,7 +32,7 @@ const meta = {
   parameters: {
     backgrounds: {
       options: {
-        note: { name: 'note', value: theme.color.note },
+        note: { name: 'note', value: theme.color.notes },
         twitter: { name: 'twitter', value: theme.color.twitter },
         article: { name: 'article', value: theme.color.article },
       },
@@ -42,12 +42,12 @@ const meta = {
     backgrounds: { value: 'note' },
   },
   argTypes: {
-    active: {
+    $active: {
       control: {
         type: 'boolean',
       },
     },
-    icon: {
+    $icon: {
       control: {
         type: 'select',
       },
@@ -69,6 +69,6 @@ const Template = (args) => <ButtonIcon {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
-  icon: plusIcon,
-  active: true,
+  $icon: plusIcon,
+  $active: true,
 };

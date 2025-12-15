@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ButtonIcon from 'components/atoms/ButtonIcon/ButtonIcon';
@@ -15,7 +15,7 @@ const SidebarWrapper = styled.div`
   bottom: 0;
   width: 15.3rem;
   background-color: ${({ $activeColor, theme }) =>
-    $activeColor ? theme.color[$activeColor] : theme.color.note};
+    $activeColor ? theme.color[$activeColor] : theme.color.notes};
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -58,42 +58,42 @@ const HeaderWrapper = styled.div`
   row-gap: 10vh;
 `;
 
-const Sidebar = ({ pageType = 'note' }) => (
+const Sidebar = ({ pageType = 'notes' }) => (
   <SidebarWrapper $activeColor={pageType}>
     <HeaderWrapper>
-      <LogoWrapper href="/">
+      <LogoWrapper to="/">
         <img src={logoIcon} alt="Logo" />
       </LogoWrapper>
       <NavWrapper>
         <NavList>
           <NavItem>
-            <ButtonIcon as={NavLink} to="/" icon={noteIcon} active={pageType === 'note'} />
+            <ButtonIcon as={NavLink} to="/" $icon={noteIcon} $active={pageType === 'notes'} />
           </NavItem>
           <NavItem>
             <ButtonIcon
               as={NavLink}
               to="/twitters"
-              icon={twitterIcon}
-              active={pageType === 'twitter'}
+              $icon={twitterIcon}
+              $active={pageType === 'twitters'}
             />
           </NavItem>
           <NavItem>
             <ButtonIcon
               as={NavLink}
               to="/articles"
-              icon={articleIcon}
-              active={pageType === 'article'}
+              $icon={articleIcon}
+              $active={pageType === 'articles'}
             />
           </NavItem>
         </NavList>
       </NavWrapper>
     </HeaderWrapper>
-    <ButtonIcon as={NavLink} to="/logout" icon={logoutIcon} />
+    <ButtonIcon as={NavLink} to="/logout" $icon={logoutIcon} />
   </SidebarWrapper>
 );
 
 export default Sidebar;
 
 Sidebar.propTypes = {
-  pageType: PropTypes.oneOf(['note', 'article', 'twitter']),
+  pageType: PropTypes.oneOf(['notes', 'articles', 'twitters']),
 };
