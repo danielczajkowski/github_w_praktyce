@@ -1,5 +1,10 @@
-import styled, { css, keyframes } from 'styled-components';
 import PropTypes from 'prop-types';
+
+import styled, { css, keyframes } from 'styled-components';
+import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { removeItem as removeItemAction } from 'actions';
+
 import Paragraph from 'components/atoms/Paragraph/Paragraph';
 import Heading from 'components/atoms/Heading/Heading';
 import Button from 'components/atoms/Button/Button';
@@ -27,6 +32,7 @@ const StyledWrapper = styled.div`
   display: grid;
   grid-template-rows: 8rem 1fr;
   animation: ${fadeIn} 0.3s ease-in-out;
+  cursor: pointer;
 `;
 
 const InnerWrapper = styled.div`
@@ -57,7 +63,7 @@ const StyledAvatar = styled.div`
   width: 9.1rem;
   height: 9.1rem;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.color.twitter};
+  background-color: ${({ theme }) => theme.color.twitters};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,35 +90,77 @@ const StyledLink = styled(ButtonIcon)`
   height: 5rem;
 `;
 
-const Card = ({ cardType = 'note', title, createdAt, content, articleUrl, avatarUrl }) => (
-  <StyledWrapper>
-    <InnerWrapper $activeColor={cardType}>
-      <StyledHeading>{title}</StyledHeading>
-      <DateInfo>{createdAt}</DateInfo>
+const Card = ({
+  id,
+  cardType = 'notes',
+  title,
+  createdAt,
+  content,
+  articleUrl,
+  avatarUrl,
+  removeItem,
+}) => {
+  const navigate = useNavigate();
 
-      {cardType === 'article' && (
-        <StyledLink as="a" target="_blank" icon={linkIcon} active circle href={articleUrl} />
-      )}
-      {cardType === 'twitter' && (
-        <StyledAvatar>
-          <img src={avatarUrl} alt="Avatar" />
-        </StyledAvatar>
-      )}
-    </InnerWrapper>
-    <InnerWrapper $flex>
-      <Paragraph>{content}</Paragraph>
-      <Button $secondary>remove</Button>
-    </InnerWrapper>
-  </StyledWrapper>
-);
+  const handleCardClick = () => {
+    navigate(`/${cardType}/${id}`);
+  };
 
-export default Card;
+  const handleLinkClick = (e) => {
+    e.stopPropagation();
+  };
+
+  const handleButtonClick = (e) => {
+    e.stopPropagation();
+    removeItem(cardType, id);
+  };
+
+  return (
+    <StyledWrapper onClick={handleCardClick}>
+      <InnerWrapper $activeColor={cardType}>
+        <StyledHeading>{title}</StyledHeading>
+        <DateInfo>{createdAt}</DateInfo>
+
+        {cardType === 'articles' && (
+          <StyledLink
+            as="a"
+            target="_blank"
+            $icon={linkIcon}
+            $active
+            $circle
+            href={articleUrl}
+            onClick={handleLinkClick}
+          />
+        )}
+        {cardType === 'twitters' && (
+          <StyledAvatar>
+            <img src={avatarUrl} alt="Avatar" />
+          </StyledAvatar>
+        )}
+      </InnerWrapper>
+      <InnerWrapper $flex>
+        <Paragraph>{content}</Paragraph>
+        <Button $secondary onClick={handleButtonClick}>
+          remove
+        </Button>
+      </InnerWrapper>
+    </StyledWrapper>
+  );
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  removeItem: (itemType, id) => dispatch(removeItemAction(itemType, id)),
+});
+
+export default connect(null, mapDispatchToProps)(Card);
 
 Card.propTypes = {
-  cardType: PropTypes.oneOf(['note', 'twitter', 'article']),
+  id: PropTypes.number.isRequired,
+  cardType: PropTypes.oneOf(['notes', 'twitters', 'articles']),
   title: PropTypes.string,
   createdAt: PropTypes.string,
   content: PropTypes.string,
   avatarUrl: PropTypes.string,
   articleUrl: PropTypes.string,
+  removeItem: PropTypes.func.isRequired,
 };
