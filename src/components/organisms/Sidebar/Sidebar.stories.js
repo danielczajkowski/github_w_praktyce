@@ -1,4 +1,5 @@
 import Sidebar from './Sidebar';
+
 import { MemoryRouter } from 'react-router-dom';
 
 const meta = {
@@ -6,17 +7,11 @@ const meta = {
   component: Sidebar,
   decorators: [
     (Story) => (
-      <MemoryRouter>
+      <MemoryRouter initialEntries={['/notes']}>
         <Story />
       </MemoryRouter>
     ),
   ],
-  argTypes: {
-    cardType: {
-      control: 'select',
-      options: ['note', 'twitter', 'article'],
-    },
-  },
 };
 
 const Template = (args) => <Sidebar {...args} />;
@@ -24,4 +19,3 @@ const Template = (args) => <Sidebar {...args} />;
 export default meta;
 
 export const Primary = Template.bind({});
-Primary.args = { cardType: 'note' };
