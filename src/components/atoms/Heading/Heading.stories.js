@@ -4,7 +4,7 @@ const meta = {
   title: 'Components/Heading',
   component: Heading,
   argTypes: {
-    big: {
+    $big: {
       control: {
         type: 'boolean',
       },
@@ -19,5 +19,5 @@ const Template = (args) => <Heading {...args} />;
 export const Primary = Template.bind({});
 Primary.args = {
   children: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-  big: true,
+  $big: true,
 };

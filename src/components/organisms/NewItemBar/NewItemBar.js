@@ -14,7 +14,7 @@ const StyledWrapper = styled.div`
   width: 40rem;
   height: 100%;
   background-color: ${({ theme }) => theme.color.white};
-  border-left: 5px solid ${({ theme, pageType }) => theme.color[pageType]};
+  border-left: 5px solid ${({ theme, $pageType }) => theme.color[$pageType]};
   padding: 12rem 3rem;
   position: fixed;
   right: 0;
@@ -47,8 +47,8 @@ const StyledButton = styled(Button)`
   width: auto;
   padding: 1.5rem 2rem;
   font-size: ${({ theme }) => theme.fontSize.s};
-  background-color: ${({ theme, pageType }) => theme.color[pageType]};
-  border-color: ${({ theme, pageType }) => theme.color[pageType]};
+  background-color: ${({ theme, $pageType }) => theme.color[$pageType]};
+  border-color: ${({ theme, $pageType }) => theme.color[$pageType]};
 `;
 
 const StyledParagraph = styled(Paragraph)`
@@ -59,11 +59,11 @@ const StyledParagraph = styled(Paragraph)`
 const StyledButtonIcon = styled(ButtonIcon)`
   width: 5rem;
   height: 5rem;
-  background-color: ${({ theme, pageType }) => theme.color[pageType]};
+  background-color: ${({ theme, $pageType }) => theme.color[$pageType]};
   transform: rotate(45deg);
 `;
 
-const StyledClose = styled(Paragraph)`
+const StyledClose = styled.div`
   position: absolute;
   bottom: 2rem;
   right: 2rem;
@@ -94,7 +94,7 @@ const NewItemBar = ({ isVisible = false, handleClose, addItem }) => {
   };
 
   return (
-    <StyledWrapper pageType={pageType} className={isVisible ? 'open' : ''}>
+    <StyledWrapper $pageType={pageType} className={isVisible ? 'open' : ''}>
       <Heading>Add new {pageType}</Heading>
       <StyledParagraph>Fill the form below to add a new {pageType}</StyledParagraph>
       <StyledForm>
@@ -102,14 +102,14 @@ const NewItemBar = ({ isVisible = false, handleClose, addItem }) => {
         {pageType === 'twitters' && <Input placeholder="Twitter name" />}
         {pageType === 'articles' && <Input placeholder="Link" />}
         <StyledTextarea as="textarea" placeholder="Content" />
-        <StyledButton pageType={pageType} type="submit" onClick={handleSubmit}>
+        <StyledButton $pageType={pageType} type="submit" onClick={handleSubmit}>
           Add new {pageType.slice(0, -1)}
         </StyledButton>
       </StyledForm>
 
       <StyledClose onClick={handleClose}>
         <StyledCloseParagraph>Close</StyledCloseParagraph>
-        <StyledButtonIcon $icon={plusIcon} pageType={pageType} $circle />
+        <StyledButtonIcon $icon={plusIcon} $pageType={pageType} $circle />
       </StyledClose>
     </StyledWrapper>
   );

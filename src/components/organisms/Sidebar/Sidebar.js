@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import ButtonIcon from 'components/atoms/ButtonIcon/ButtonIcon';
+import { usePageType } from 'hooks/usePageType';
 import logoIcon from 'assets/icons/logo.svg';
 import twitterIcon from 'assets/icons/twitter.svg';
 import articleIcon from 'assets/icons/bulb.svg';
@@ -58,42 +58,42 @@ const HeaderWrapper = styled.div`
   row-gap: 10vh;
 `;
 
-const Sidebar = ({ pageType = 'notes' }) => (
-  <SidebarWrapper $activeColor={pageType}>
-    <HeaderWrapper>
-      <LogoWrapper to="/">
-        <img src={logoIcon} alt="Logo" />
-      </LogoWrapper>
-      <NavWrapper>
-        <NavList>
-          <NavItem>
-            <ButtonIcon as={NavLink} to="/" $icon={noteIcon} $active={pageType === 'notes'} />
-          </NavItem>
-          <NavItem>
-            <ButtonIcon
-              as={NavLink}
-              to="/twitters"
-              $icon={twitterIcon}
-              $active={pageType === 'twitters'}
-            />
-          </NavItem>
-          <NavItem>
-            <ButtonIcon
-              as={NavLink}
-              to="/articles"
-              $icon={articleIcon}
-              $active={pageType === 'articles'}
-            />
-          </NavItem>
-        </NavList>
-      </NavWrapper>
-    </HeaderWrapper>
-    <ButtonIcon as={NavLink} to="/logout" $icon={logoutIcon} />
-  </SidebarWrapper>
-);
+const Sidebar = () => {
+  const pageType = usePageType();
+
+  return (
+    <SidebarWrapper $activeColor={pageType}>
+      <HeaderWrapper>
+        <LogoWrapper to="/">
+          <img src={logoIcon} alt="Logo" />
+        </LogoWrapper>
+        <NavWrapper>
+          <NavList>
+            <NavItem>
+              <ButtonIcon as={NavLink} to="/" $icon={noteIcon} $active={pageType === 'notes'} />
+            </NavItem>
+            <NavItem>
+              <ButtonIcon
+                as={NavLink}
+                to="/twitters"
+                $icon={twitterIcon}
+                $active={pageType === 'twitters'}
+              />
+            </NavItem>
+            <NavItem>
+              <ButtonIcon
+                as={NavLink}
+                to="/articles"
+                $icon={articleIcon}
+                $active={pageType === 'articles'}
+              />
+            </NavItem>
+          </NavList>
+        </NavWrapper>
+      </HeaderWrapper>
+      <ButtonIcon as={NavLink} to="/logout" $icon={logoutIcon} />
+    </SidebarWrapper>
+  );
+};
 
 export default Sidebar;
-
-Sidebar.propTypes = {
-  pageType: PropTypes.oneOf(['notes', 'articles', 'twitters']),
-};
