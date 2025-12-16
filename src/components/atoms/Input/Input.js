@@ -7,11 +7,13 @@ const Input = styled.input`
   border: 1px solid #ccc;
   background-color: ${({ theme }) => theme.color.grey100};
   border-radius: 5rem;
+  border: none;
 
   &::placeholder {
     color: ${({ theme }) => theme.color.grey300};
     text-transform: uppercase;
     letter-spacing: 1px;
+    font-weight: ${({ theme }) => theme.fontWeight.bold};
   }
 
   ${({ $search }) =>
