@@ -24,6 +24,7 @@ const Root = () => (
           <Route path={routes.articles} element={<Articles />} />
           <Route path={routes.article} element={<DetailsPage />} />
           <Route path={routes.login} element={<Login />} />
+          <Route path={routes.logout} element={<Navigate to={routes.login} replace />} />
         </Routes>
       </MainTemplate>
     </BrowserRouter>

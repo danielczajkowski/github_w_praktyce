@@ -1,19 +1,23 @@
+import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from 'theme/GlobalStyle';
 import PropTypes from 'prop-types';
 import { theme } from 'theme/mainTheme';
+import { usePageType } from 'hooks/usePageType';
 
-function MainTemplate({ children }) {
+const MainTemplate = ({ children }) => {
+  const pageType = usePageType();
+
   return (
-    <>
+    <div>
       <GlobalStyle />
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
-    </>
+      <ThemeProvider theme={{ ...theme, pageType }}>{children}</ThemeProvider>
+    </div>
   );
-}
-
-export default MainTemplate;
+};
 
 MainTemplate.propTypes = {
   children: PropTypes.element.isRequired,
 };
+
+export default MainTemplate;
