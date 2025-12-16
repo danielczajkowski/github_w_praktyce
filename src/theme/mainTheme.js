@@ -8,6 +8,7 @@ export const theme = {
     grey300: 'hsl(0, 0%, 70%)',
     black: 'hsl(0, 0%, 0%)',
     white: 'hsl(0, 0%, 100%)',
+    error: 'hsl(0, 100%, 60%)',
   },
   fontWeight: {
     light: 300,

@@ -9,6 +9,7 @@ import plusIcon from 'assets/icons/plus.svg';
 import { usePageType } from 'hooks/usePageType';
 import { connect } from 'react-redux';
 import { addItem as addItemAction } from 'actions';
+import { useForm } from 'react-hook-form';
 
 const StyledWrapper = styled.div`
   width: 40rem;
@@ -85,24 +86,109 @@ const StyledCloseParagraph = styled(Paragraph)`
   }
 `;
 
+const StyledError = styled(Paragraph)`
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  color: ${({ theme }) => theme.color.error};
+  margin-top: -2rem;
+  margin-bottom: 0;
+  padding-left: 1rem;
+
+  &:not(:last-child) {
+    margin-bottom: 0;
+  }
+`;
+
 const NewItemBar = ({ isVisible = false, handleClose, addItem }) => {
   const pageType = usePageType();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    addItem(pageType, { title: 'New item' });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    addItem(pageType, data);
+    handleClose();
+    reset();
   };
 
   return (
     <StyledWrapper $pageType={pageType} className={isVisible ? 'open' : ''}>
       <Heading>Add new {pageType}</Heading>
       <StyledParagraph>Fill the form below to add a new {pageType}</StyledParagraph>
-      <StyledForm>
-        <Input placeholder="Title" />
-        {pageType === 'twitters' && <Input placeholder="Twitter name" />}
-        {pageType === 'articles' && <Input placeholder="Link" />}
-        <StyledTextarea as="textarea" placeholder="Content" />
-        <StyledButton $pageType={pageType} type="submit" onClick={handleSubmit}>
+      <StyledForm onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          {...register('title', {
+            required: 'Title is required',
+          })}
+          placeholder="Title"
+        />
+        {errors.title && <StyledError>{errors.title.message}</StyledError>}
+
+        {pageType === 'twitters' && (
+          <>
+            <Input
+              {...register('twitterName', {
+                required: 'Twitter name is required',
+                minLength: {
+                  value: 3,
+                  message: (
+                    <>
+                      Twitter name must be <strong>at least 3 characters long</strong>
+                    </>
+                  ),
+                },
+                maxLength: {
+                  value: 20,
+                  message: (
+                    <>
+                      Twitter name must be <strong>at most 20 characters long</strong>
+                    </>
+                  ),
+                },
+              })}
+              placeholder="Twitter name"
+            />
+            {errors.twitterName && <StyledError>{errors.twitterName.message}</StyledError>}
+            <Input
+              {...register('avatarUrl', {
+                required: 'Avatar is required',
+                pattern: {
+                  value: /(^https?:\/\/)|(^www\.)/,
+                  message: 'Invalid avatar url',
+                },
+              })}
+              placeholder="Avatar url"
+            />
+            {errors.avatarUrl && <StyledError>{errors.avatarUrl.message}</StyledError>}
+          </>
+        )}
+        {pageType === 'articles' && (
+          <>
+            <Input
+              {...register('articleUrl', {
+                required: 'Link is required',
+                pattern: {
+                  value: /(^https?:\/\/)|(^www\.)/,
+                  message: 'Invalid link',
+                },
+              })}
+              placeholder="Link"
+            />
+            {errors.articleUrl && <StyledError>{errors.articleUrl.message}</StyledError>}
+          </>
+        )}
+        <StyledTextarea
+          {...register('content', {
+            required: 'Content is required',
+          })}
+          as="textarea"
+          placeholder="Content"
+        />
+        {errors.content && <StyledError>{errors.content.message}</StyledError>}
+        <StyledButton $pageType={pageType} type="submit">
           Add new {pageType.slice(0, -1)}
         </StyledButton>
       </StyledForm>
