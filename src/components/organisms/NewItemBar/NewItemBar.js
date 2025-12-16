@@ -7,6 +7,8 @@ import Heading from 'components/atoms/Heading/Heading';
 import Paragraph from 'components/atoms/Paragraph/Paragraph';
 import plusIcon from 'assets/icons/plus.svg';
 import { usePageType } from 'hooks/usePageType';
+import { connect } from 'react-redux';
+import { addItem as addItemAction } from 'actions';
 
 const StyledWrapper = styled.div`
   width: 40rem;
@@ -83,18 +85,26 @@ const StyledCloseParagraph = styled(Paragraph)`
   }
 `;
 
-const NewItemBar = ({ isVisible = false, handleClose }) => {
+const NewItemBar = ({ isVisible = false, handleClose, addItem }) => {
   const pageType = usePageType();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addItem(pageType, { title: 'New item' });
+  };
 
   return (
     <StyledWrapper pageType={pageType} className={isVisible ? 'open' : ''}>
       <Heading>Add new {pageType}</Heading>
       <StyledParagraph>Fill the form below to add a new {pageType}</StyledParagraph>
       <StyledForm>
-        <Input placeholder={pageType === 'twitters' ? 'Twitter account name' : 'Title'} />
+        <Input placeholder="Title" />
+        {pageType === 'twitters' && <Input placeholder="Twitter name" />}
         {pageType === 'articles' && <Input placeholder="Link" />}
         <StyledTextarea as="textarea" placeholder="Content" />
-        <StyledButton pageType={pageType}>Add new {pageType.slice(0, -1)}</StyledButton>
+        <StyledButton pageType={pageType} type="submit" onClick={handleSubmit}>
+          Add new {pageType.slice(0, -1)}
+        </StyledButton>
       </StyledForm>
 
       <StyledClose onClick={handleClose}>
@@ -110,4 +120,8 @@ NewItemBar.propTypes = {
   handleClose: PropTypes.func.isRequired,
 };
 
-export default NewItemBar;
+const mapDispatchToProps = (dispatch) => ({
+  addItem: (itemType, item) => dispatch(addItemAction(itemType, item)),
+});
+
+export default connect(null, mapDispatchToProps)(NewItemBar);

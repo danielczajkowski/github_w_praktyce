@@ -104,6 +104,7 @@ const initialState = {
       content:
         'Just pushed a new update to React DevTools. The performance profiler is now 10x faster!',
       avatarUrl: 'https://unavatar.io/twitter/dan_abramov',
+      twitterName: 'dan_abramov',
     },
     {
       id: 2,
@@ -112,6 +113,7 @@ const initialState = {
       content:
         'Remember: Code is read more often than it is written. Write for humans, not machines.',
       avatarUrl: 'https://unavatar.io/twitter/kentcdodds',
+      twitterName: 'kentcdodds',
     },
     {
       id: 3,
@@ -120,6 +122,7 @@ const initialState = {
       content:
         "CSS Grid changed my life. If you haven't tried it yet, drop everything and learn it now.",
       avatarUrl: 'https://unavatar.io/twitter/sarah_edo',
+      twitterName: 'sarah_edo',
     },
     {
       id: 4,
@@ -128,6 +131,7 @@ const initialState = {
       content:
         "Hot tip: Use console.table() instead of console.log() for arrays and objects. You're welcome! 🔥",
       avatarUrl: 'https://unavatar.io/twitter/wesbos',
+      twitterName: 'wesbos',
     },
     {
       id: 5,
@@ -136,6 +140,7 @@ const initialState = {
       content:
         'Performance matters. A 1 second delay in page response can result in a 7% reduction in conversions.',
       avatarUrl: 'https://unavatar.io/twitter/addyosmani',
+      twitterName: 'addyosmani',
     },
     {
       id: 6,
@@ -156,6 +161,11 @@ const rootReducer = (state = initialState, action) => {
         [action.payload.itemType]: [
           ...state[action.payload.itemType].filter((item) => item.id !== action.payload.id),
         ],
+      };
+    case 'ADD_ITEM':
+      return {
+        ...state,
+        [action.payload.itemType]: [...state[action.payload.itemType], action.payload.item],
       };
     default:
       return state;

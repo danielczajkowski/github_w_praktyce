@@ -4,14 +4,15 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 const Twitters = ({ twitters }) => (
-  <GridTemplate pageType="twitters">
-    {twitters.map(({ id, title, createdAt, content, avatarUrl }) => (
+  <GridTemplate>
+    {twitters.map(({ id, title, createdAt, content, twitterName, avatarUrl }) => (
       <Card
         key={id}
         id={id}
         title={title}
         createdAt={createdAt}
         content={content}
+        twitterName={twitterName}
         avatarUrl={avatarUrl}
         cardType="twitters"
       />
@@ -30,6 +31,7 @@ Twitters.propTypes = {
       title: PropTypes.string.isRequired,
       createdAt: PropTypes.string.isRequired,
       content: PropTypes.string.isRequired,
+      twitterName: PropTypes.string,
       avatarUrl: PropTypes.string.isRequired,
     }).isRequired,
   ).isRequired,

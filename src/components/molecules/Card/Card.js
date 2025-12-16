@@ -4,6 +4,7 @@ import styled, { css, keyframes } from 'styled-components';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { removeItem as removeItemAction } from 'actions';
+import { usePageType } from 'hooks/usePageType';
 
 import Paragraph from 'components/atoms/Paragraph/Paragraph';
 import Heading from 'components/atoms/Heading/Heading';
@@ -92,18 +93,20 @@ const StyledLink = styled(ButtonIcon)`
 
 const Card = ({
   id,
-  cardType = 'notes',
   title,
   createdAt,
   content,
   articleUrl,
   avatarUrl,
+  twitterName,
   removeItem,
 }) => {
+  const pageType = usePageType();
+
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(`/${cardType}/${id}`);
+    navigate(`/${pageType}/${id}`);
   };
 
   const handleLinkClick = (e) => {
@@ -112,16 +115,16 @@ const Card = ({
 
   const handleButtonClick = (e) => {
     e.stopPropagation();
-    removeItem(cardType, id);
+    removeItem(pageType, id);
   };
 
   return (
     <StyledWrapper onClick={handleCardClick}>
-      <InnerWrapper $activeColor={cardType}>
+      <InnerWrapper $activeColor={pageType}>
         <StyledHeading>{title}</StyledHeading>
         <DateInfo>{createdAt}</DateInfo>
 
-        {cardType === 'articles' && (
+        {pageType === 'articles' && (
           <StyledLink
             as="a"
             target="_blank"
@@ -132,9 +135,9 @@ const Card = ({
             onClick={handleLinkClick}
           />
         )}
-        {cardType === 'twitters' && (
+        {pageType === 'twitters' && (
           <StyledAvatar>
-            <img src={avatarUrl} alt="Avatar" />
+            <img src={avatarUrl} alt={`${twitterName || 'Twitter account'} avatar`} />
           </StyledAvatar>
         )}
       </InnerWrapper>
@@ -156,11 +159,11 @@ export default connect(null, mapDispatchToProps)(Card);
 
 Card.propTypes = {
   id: PropTypes.number.isRequired,
-  cardType: PropTypes.oneOf(['notes', 'twitters', 'articles']),
-  title: PropTypes.string,
-  createdAt: PropTypes.string,
-  content: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string,
   articleUrl: PropTypes.string,
+  twitterName: PropTypes.string,
   removeItem: PropTypes.func.isRequired,
 };
