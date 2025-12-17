@@ -1,7 +1,9 @@
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
-import ButtonIcon from 'components/atoms/ButtonIcon/ButtonIcon';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { usePageType } from 'hooks/usePageType';
+import { connect } from 'react-redux';
+import { logout as logoutAction } from 'actions';
+import ButtonIcon from 'components/atoms/ButtonIcon/ButtonIcon';
 import logoIcon from 'assets/icons/logo.svg';
 import twitterIcon from 'assets/icons/twitter.svg';
 import articleIcon from 'assets/icons/bulb.svg';
@@ -36,8 +38,6 @@ const LogoWrapper = styled(NavLink)`
   }
 `;
 
-const NavWrapper = styled.nav``;
-
 const NavList = styled.ul`
   list-style: none;
   display: flex;
@@ -58,8 +58,15 @@ const HeaderWrapper = styled.div`
   row-gap: 10vh;
 `;
 
-const Sidebar = () => {
+const Sidebar = ({ logout }) => {
   const pageType = usePageType();
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate('/login');
+    logout();
+  };
 
   return (
     <SidebarWrapper $activeColor={pageType}>
@@ -67,7 +74,7 @@ const Sidebar = () => {
         <LogoWrapper to="/">
           <img src={logoIcon} alt="Logo" />
         </LogoWrapper>
-        <NavWrapper>
+        <nav>
           <NavList>
             <NavItem>
               <ButtonIcon as={NavLink} to="/" $icon={noteIcon} $active={pageType === 'notes'} />
@@ -89,11 +96,15 @@ const Sidebar = () => {
               />
             </NavItem>
           </NavList>
-        </NavWrapper>
+        </nav>
       </HeaderWrapper>
-      <ButtonIcon as={NavLink} to="/logout" $icon={logoutIcon} />
+      <ButtonIcon onClick={handleLogout} $icon={logoutIcon} />
     </SidebarWrapper>
   );
 };
 
-export default Sidebar;
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(logoutAction()),
+});
+
+export default connect(null, mapDispatchToProps)(Sidebar);

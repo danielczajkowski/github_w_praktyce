@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import UserPageTemplate from 'templates/UserPageTemplate/UserPageTemplate';
 import Paragraph from 'components/atoms/Paragraph/Paragraph';
 import Heading from 'components/atoms/Heading/Heading';
 import Button from 'components/atoms/Button/Button';
@@ -64,9 +63,8 @@ const DetailsTemplate = ({
   articleUrl,
 }) => {
   const navigate = useNavigate();
-
   return (
-    <UserPageTemplate pageType={pageType}>
+    <>
       <StyledHeader>
         <Heading $big>{title}</Heading>
         <DateInfo>{createdAt}</DateInfo>
@@ -80,7 +78,13 @@ const DetailsTemplate = ({
 
       <StyledButtonsWrapper>
         {pageType === 'articles' && (
-          <Button as="a" href={articleUrl} target="_blank" rel="noopener noreferrer">
+          <Button
+            as="a"
+            href={articleUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            $color={pageType}
+          >
             Read more
           </Button>
         )}
@@ -88,17 +92,17 @@ const DetailsTemplate = ({
           go back
         </Button>
       </StyledButtonsWrapper>
-    </UserPageTemplate>
+    </>
   );
 };
 
 export default DetailsTemplate;
 
 DetailsTemplate.propTypes = {
-  pageType: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  createdAt: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  pageType: PropTypes.string,
+  title: PropTypes.string,
+  createdAt: PropTypes.string,
+  content: PropTypes.string,
   avatarUrl: PropTypes.string,
   articleUrl: PropTypes.string,
   twitterName: PropTypes.string,
