@@ -5,6 +5,7 @@ import Button from 'components/atoms/Button/Button';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'routes/routes';
 import PropTypes from 'prop-types';
+import { humanizeDate } from 'hooks/humanizeDate';
 
 const StyledHeader = styled.div`\
   margin-bottom: 2rem;
@@ -67,7 +68,7 @@ const DetailsTemplate = ({
     <>
       <StyledHeader>
         <Heading $big>{title}</Heading>
-        <DateInfo>{createdAt}</DateInfo>
+        <DateInfo>{humanizeDate(createdAt)}</DateInfo>
         {pageType === 'twitters' && (
           <StyledAvatar>
             <img src={avatarUrl} alt={`${twitterName} avatar`} />

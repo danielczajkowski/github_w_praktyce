@@ -12,6 +12,8 @@ import Button from 'components/atoms/Button/Button';
 import ButtonIcon from 'components/atoms/ButtonIcon/ButtonIcon';
 import linkIcon from 'assets/icons/link.svg';
 
+import { humanizeDate } from 'hooks/humanizeDate';
+
 const fadeIn = keyframes`
   from {
     transform: translateY(2rem);
@@ -113,7 +115,7 @@ const Card = ({
     e.stopPropagation();
   };
 
-  const handleButtonClick = (e) => {
+  const handleRemoveButtonClick = (e) => {
     e.stopPropagation();
     removeItem(pageType, id);
   };
@@ -122,7 +124,7 @@ const Card = ({
     <StyledWrapper onClick={handleCardClick}>
       <InnerWrapper $activeColor={pageType}>
         <StyledHeading>{title}</StyledHeading>
-        <DateInfo>{createdAt}</DateInfo>
+        {createdAt && <DateInfo>{humanizeDate(createdAt)}</DateInfo>}
 
         {pageType === 'articles' && (
           <StyledLink
@@ -143,7 +145,7 @@ const Card = ({
       </InnerWrapper>
       <InnerWrapper $flex>
         <Paragraph>{content}</Paragraph>
-        <Button $secondary onClick={handleButtonClick}>
+        <Button $secondary onClick={handleRemoveButtonClick}>
           remove
         </Button>
       </InnerWrapper>
