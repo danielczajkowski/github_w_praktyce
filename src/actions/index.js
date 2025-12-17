@@ -1,7 +1,12 @@
 import axios from 'axios';
 
 export const REMOVE_ITEM = 'REMOVE_ITEM';
-export const ADD_ITEM = 'ADD_ITEM';
+export const ADD_ITEM_REQUEST = 'ADD_ITEM_REQUEST';
+export const ADD_ITEM_SUCCESS = 'ADD_ITEM_SUCCESS';
+export const ADD_ITEM_FAILURE = 'ADD_ITEM_FAILURE';
+export const REMOVE_ITEM_REQUEST = 'REMOVE_ITEM_REQUEST';
+export const REMOVE_ITEM_SUCCESS = 'REMOVE_ITEM_SUCCESS';
+export const REMOVE_ITEM_FAILURE = 'REMOVE_ITEM_FAILURE';
 export const AUTH_REQUEST = 'AUTH_REQUEST';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAILURE = 'AUTH_FAILURE';
@@ -13,26 +18,53 @@ export const FETCH_SINGLE_ITEM_SUCCESS = 'FETCH_SINGLE_ITEM_SUCCESS';
 export const FETCH_SINGLE_ITEM_FAILURE = 'FETCH_SINGLE_ITEM_FAILURE';
 export const LOGOUT = 'LOGOUT';
 
-export const removeItem = (itemType, id) => ({
-  type: REMOVE_ITEM,
-  payload: { itemType, id },
-});
+export const removeItem = (itemType, id) => (dispatch) => {
+  dispatch({
+    type: REMOVE_ITEM_REQUEST,
+  });
 
-export const addItem = (itemType, item) => {
-  const getId = () => {
-    return Math.floor(Math.random() * 1000000);
-  };
+  return axios
+    .delete(`http://localhost:9000/api/note/${id}`)
+    .then(() => {
+      dispatch({
+        type: REMOVE_ITEM_SUCCESS,
+        payload: { itemType, id },
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch({
+        type: REMOVE_ITEM_FAILURE,
+      });
+    });
+};
 
-  return {
-    type: ADD_ITEM,
-    payload: {
-      itemType,
-      item: {
-        id: getId(),
-        ...item,
-      },
-    },
-  };
+export const addItem = (itemType, data) => (dispatch, getState) => {
+  dispatch({
+    type: ADD_ITEM_REQUEST,
+  });
+
+  return axios
+    .post('http://localhost:9000/api/note', {
+      ...data,
+      type: itemType,
+      userID: getState().user.id,
+    })
+    .then(({ data }) => {
+      dispatch({
+        type: ADD_ITEM_SUCCESS,
+        payload: {
+          itemType,
+          item: data,
+        },
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch({
+        type: ADD_ITEM_FAILURE,
+      });
+    });
 };
 
 export const authenticateUser =
@@ -102,7 +134,7 @@ export const fetchItems = (itemType) => (dispatch, getState) => {
     });
 };
 
-export const fetchSingleItem = (itemType, id) => (dispatch) => {
+export const fetchSingleItem = (id) => (dispatch) => {
   dispatch({
     type: FETCH_SINGLE_ITEM,
   });

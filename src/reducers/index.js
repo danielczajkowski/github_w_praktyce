@@ -2,8 +2,12 @@ import {
   AUTH_REQUEST,
   AUTH_SUCCESS,
   AUTH_FAILURE,
-  REMOVE_ITEM,
-  ADD_ITEM,
+  ADD_ITEM_REQUEST,
+  ADD_ITEM_SUCCESS,
+  ADD_ITEM_FAILURE,
+  REMOVE_ITEM_REQUEST,
+  REMOVE_ITEM_SUCCESS,
+  REMOVE_ITEM_FAILURE,
   LOGOUT,
   FETCH_REQUEST,
   FETCH_SUCCESS,
@@ -37,8 +41,8 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         user: {
-          id: action.payload.data._id,
-          username: action.payload.data.username,
+          id: action.payload.id,
+          username: action.payload.username,
         },
       };
     case AUTH_FAILURE:
@@ -52,17 +56,23 @@ const rootReducer = (state = initialState, action) => {
         },
       };
 
-    case REMOVE_ITEM:
+    case REMOVE_ITEM_REQUEST:
       return {
         ...state,
-        [action.payload.itemType]: [
-          ...state[action.payload.itemType].filter((item) => item.id !== action.payload.id),
-        ],
+        loading: true,
       };
-    case ADD_ITEM:
+    case REMOVE_ITEM_SUCCESS:
       return {
         ...state,
-        [action.payload.itemType]: [...state[action.payload.itemType], action.payload.item],
+        [action.payload.itemType]: state[action.payload.itemType].filter(
+          (item) => item._id !== action.payload.id,
+        ),
+        loading: false,
+      };
+    case REMOVE_ITEM_FAILURE:
+      return {
+        ...state,
+        loading: false,
       };
 
     case FETCH_REQUEST:
@@ -100,6 +110,24 @@ const rootReducer = (state = initialState, action) => {
         loading: false,
         singleItem: null,
       };
+
+    case ADD_ITEM_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ADD_ITEM_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        [action.payload.itemType]: [...state[action.payload.itemType], action.payload.item],
+      };
+    case ADD_ITEM_FAILURE:
+      return {
+        ...state,
+        loading: false,
+      };
+
     default:
       return state;
   }
