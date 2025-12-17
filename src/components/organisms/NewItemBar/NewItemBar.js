@@ -5,6 +5,7 @@ import Button from 'components/atoms/Button/Button';
 import ButtonIcon from 'components/atoms/ButtonIcon/ButtonIcon';
 import Heading from 'components/atoms/Heading/Heading';
 import Paragraph from 'components/atoms/Paragraph/Paragraph';
+import ErrorMessage from 'components/atoms/ErrorMessage/ErrorMessage';
 import plusIcon from 'assets/icons/plus.svg';
 import { usePageType } from 'hooks/usePageType';
 import { connect } from 'react-redux';
@@ -86,18 +87,6 @@ const StyledCloseParagraph = styled(Paragraph)`
   }
 `;
 
-const StyledError = styled(Paragraph)`
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  color: ${({ theme }) => theme.color.error};
-  margin-top: -2rem;
-  margin-bottom: 0;
-  padding-left: 1rem;
-
-  &:not(:last-child) {
-    margin-bottom: 0;
-  }
-`;
-
 const NewItemBar = ({ isVisible = false, handleClose, addItem }) => {
   const pageType = usePageType();
 
@@ -125,7 +114,7 @@ const NewItemBar = ({ isVisible = false, handleClose, addItem }) => {
           })}
           placeholder="Title"
         />
-        {errors.title && <StyledError>{errors.title.message}</StyledError>}
+        {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
 
         {pageType === 'twitters' && (
           <>
@@ -151,7 +140,7 @@ const NewItemBar = ({ isVisible = false, handleClose, addItem }) => {
               })}
               placeholder="Twitter name"
             />
-            {errors.twitterName && <StyledError>{errors.twitterName.message}</StyledError>}
+            {errors.twitterName && <ErrorMessage>{errors.twitterName.message}</ErrorMessage>}
             <Input
               {...register('avatarUrl', {
                 required: 'Avatar is required',
@@ -162,7 +151,7 @@ const NewItemBar = ({ isVisible = false, handleClose, addItem }) => {
               })}
               placeholder="Avatar url"
             />
-            {errors.avatarUrl && <StyledError>{errors.avatarUrl.message}</StyledError>}
+            {errors.avatarUrl && <ErrorMessage>{errors.avatarUrl.message}</ErrorMessage>}
           </>
         )}
         {pageType === 'articles' && (
@@ -177,7 +166,7 @@ const NewItemBar = ({ isVisible = false, handleClose, addItem }) => {
               })}
               placeholder="Link"
             />
-            {errors.articleUrl && <StyledError>{errors.articleUrl.message}</StyledError>}
+            {errors.articleUrl && <ErrorMessage>{errors.articleUrl.message}</ErrorMessage>}
           </>
         )}
         <StyledTextarea
@@ -187,7 +176,7 @@ const NewItemBar = ({ isVisible = false, handleClose, addItem }) => {
           as="textarea"
           placeholder="Content"
         />
-        {errors.content && <StyledError>{errors.content.message}</StyledError>}
+        {errors.content && <ErrorMessage>{errors.content.message}</ErrorMessage>}
         <StyledButton $pageType={pageType} type="submit">
           Add new {pageType.slice(0, -1)}
         </StyledButton>

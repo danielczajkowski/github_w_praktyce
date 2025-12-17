@@ -7,13 +7,22 @@ const Input = styled.input`
   border: 1px solid #ccc;
   background-color: ${({ theme }) => theme.color.grey100};
   border-radius: 5rem;
-  border: none;
+  border: 2px solid ${({ theme }) => theme.color.grey100};
 
   &::placeholder {
     color: ${({ theme }) => theme.color.grey300};
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: ${({ theme }) => theme.fontWeight.bold};
+  }
+
+  &:has(+ .input_error) {
+    border-color: ${({ theme }) => theme.color.error};
+    background-color: ${({ theme }) => `color-mix(in srgb, ${theme.color.error}, transparent 80%)`};
+
+    &::placeholder {
+      color: ${({ theme }) => theme.color.error};
+    }
   }
 
   ${({ $search }) =>
