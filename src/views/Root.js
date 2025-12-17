@@ -7,7 +7,7 @@ import Articles from 'views/Articles';
 import Twitters from 'views/Twitters';
 import Notes from 'views/Notes';
 import DetailsPage from 'views/DetailsPage';
-import Login from 'views/LogIn';
+import Login from 'views/Login';
 
 import store from 'store';
 
@@ -25,6 +25,7 @@ const Root = () => (
           <Route path={routes.article} element={<DetailsPage />} />
           <Route path={routes.login} element={<Login />} />
           <Route path={routes.logout} element={<Navigate to={routes.login} replace />} />
+          <Route path={routes.register} element={<Navigate to={routes.login} replace />} />
         </Routes>
       </MainTemplate>
     </BrowserRouter>

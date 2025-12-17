@@ -8,4 +8,5 @@ export const routes = {
   article: '/articles/:id',
   login: '/login',
   logout: '/logout',
+  register: '/register',
 };
