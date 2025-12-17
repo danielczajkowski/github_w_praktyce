@@ -11,8 +11,8 @@ const DetailsPage = ({ fetchSingleItem, singleItem }) => {
   const { id } = useParams();
 
   useEffect(() => {
-    fetchSingleItem(pageType, id);
-  }, [fetchSingleItem, pageType, id]);
+    fetchSingleItem(id);
+  }, [fetchSingleItem, id]);
 
   return (
     <UserPageTemplate pageType={pageType}>
