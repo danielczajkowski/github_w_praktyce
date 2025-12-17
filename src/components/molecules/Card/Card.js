@@ -158,7 +158,7 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(null, mapDispatchToProps)(Card);
 
 Card.propTypes = {
-  id: PropTypes.number.isRequired,
+  _id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   createdAt: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,

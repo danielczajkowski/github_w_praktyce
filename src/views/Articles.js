@@ -2,31 +2,42 @@ import GridTemplate from 'templates/GridTemplate/GridTemplate';
 import PropTypes from 'prop-types';
 import Card from 'components/molecules/Card/Card';
 import { connect } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchItems as fetchItemsAction } from 'actions';
 
-const Articles = ({ articles }) => (
-  <GridTemplate>
-    {articles.map(({ id, title, createdAt, content, articleUrl }) => (
-      <Card
-        key={id}
-        id={id}
-        title={title}
-        createdAt={createdAt}
-        content={content}
-        articleUrl={articleUrl}
-        cardType="articles"
-      />
-    ))}
-  </GridTemplate>
-);
+const Articles = ({ articles, fetchArticles }) => {
+  useEffect(() => {
+    fetchArticles();
+  }, [fetchArticles]);
 
+  return (
+    <GridTemplate>
+      {articles.map(({ _id, title, createdAt, content, articleUrl }) => (
+        <Card
+          key={_id}
+          id={_id}
+          title={title}
+          createdAt={createdAt}
+          content={content}
+          articleUrl={articleUrl}
+          cardType="articles"
+        />
+      ))}
+    </GridTemplate>
+  );
+};
 const mapStateToProps = (state) => ({ articles: state.articles });
 
-export default connect(mapStateToProps)(Articles);
+const mapDispatchToProps = (dispatch) => ({
+  fetchArticles: () => dispatch(fetchItemsAction('articles')),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Articles);
 
 Articles.propTypes = {
   articles: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      _id: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
       createdAt: PropTypes.string.isRequired,
       content: PropTypes.string.isRequired,

@@ -1,33 +1,45 @@
 import GridTemplate from 'templates/GridTemplate/GridTemplate';
+import { useEffect } from 'react';
 import Card from 'components/molecules/Card/Card';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { fetchItems as fetchItemsAction } from 'actions';
 
-const Twitters = ({ twitters }) => (
-  <GridTemplate>
-    {twitters.map(({ id, title, createdAt, content, twitterName, avatarUrl }) => (
-      <Card
-        key={id}
-        id={id}
-        title={title}
-        createdAt={createdAt}
-        content={content}
-        twitterName={twitterName}
-        avatarUrl={avatarUrl}
-        cardType="twitters"
-      />
-    ))}
-  </GridTemplate>
-);
+const Twitters = ({ twitters, fetchTwitters }) => {
+  useEffect(() => {
+    fetchTwitters();
+  }, [fetchTwitters]);
 
-const mapStateToProps = (state) => ({ twitters: state.twitters });
+  return (
+    <GridTemplate>
+      {twitters.map(({ _id, title, createdAt, content, twitterName, avatarUrl }) => (
+        <Card
+          key={_id}
+          id={_id}
+          title={title}
+          createdAt={createdAt}
+          content={content}
+          twitterName={twitterName}
+          avatarUrl={avatarUrl}
+          cardType="twitters"
+        />
+      ))}
+    </GridTemplate>
+  );
+};
 
-export default connect(mapStateToProps)(Twitters);
+const mapStateToProps = ({ twitters }) => ({ twitters });
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchTwitters: () => dispatch(fetchItemsAction('twitters')),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Twitters);
 
 Twitters.propTypes = {
   twitters: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      _id: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
       createdAt: PropTypes.string.isRequired,
       content: PropTypes.string.isRequired,
